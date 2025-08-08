@@ -92,22 +92,22 @@ Be careful before using the write command.
 Device does not contain a recognized partition table.
 Created a new DOS (MBR) disklabel with disk identifier 0x34cebb40.
 ```
-![Screenshot Step 1](9.png)
+![Screenshot Step](9.png)
 
 ---
 
-## Step 2: View Help Menu
+## Step : View Help Menu
 Type `m` inside `fdisk` to see the available commands and their descriptions.
 ```bash
 Command (m for help): m
 ```
 This displays the full help menu for `fdisk`.
 
-![Screenshot Step 2](10.png)
+![Screenshot Step](10.png)
 
 ---
 
-## Step 3: Create a New Partition
+## Step : Create a New Partition
 Since we need a **primary** partition, type `n` and select the **primary** option when prompted.
 ```bash
 Command (m for help): n
@@ -121,11 +121,11 @@ Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-4194303, default 4194303):
 ```
 This creates a new primary partition of size **2 GiB**.
 
-![Screenshot Step 3](11.png)
+![Screenshot Step](11.png)
 
 ---
 
-## Step 4: Change Partition Type to LVM
+## Step : Change Partition Type to LVM
 By default, the partition type is `Linux`. To change it to **Linux LVM**, press `t`:
 ```bash
 Command (m for help): t
@@ -138,21 +138,21 @@ Hex code or alias (type L to list all): 8e
 Changed type of partition 'Linux' to 'Linux LVM'.
 ```
 
-![Screenshot Step 4](12.png)
+![Screenshot Step](12.png)
 
 ---
 
-## Step 5: Save and Exit
+## Step : Save and Exit
 Type `w` to write the changes to disk and exit:
 ```bash
 Command (m for help): w
 ```
 
-![Screenshot Step 5](13.png)
+![Screenshot Step](13.png)
 
 ---
 
-## Step 6: Verify the Partition
+## Step : Verify the Partition
 Run:
 ```bash
 fdisk -l
@@ -171,7 +171,7 @@ Device     Boot Start     End Sectors Size Id Type
 /dev/sdb1        2048 4194303 4192256   2G 8e Linux LVM
 ```
 
-![Screenshot Step 6](14.png)
+![Screenshot Step](14.png)
 
 ---
 
