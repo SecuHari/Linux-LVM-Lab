@@ -273,5 +273,149 @@ VG UUID               Qs9FVW-Q3Z9-cbWw-vLeA-f43X-hxl3-2Pn7QW
 - Converted `/dev/sdb1` into a Physical Volume.  
 - Created a Volume Group named `vgapps`.  
 - Verified details of both PV and VG using `pvdisplay` and `vgdisplay`.
+# Creating Logical Volumes (LV), Formatting with EXT4, and Preparing for Mount
+
+This guide describes the steps to create Logical Volumes (LV) inside an existing Volume Group (VG), format them with the EXT4 filesystem, and prepare them for mounting.
+
+---
+
+## Step 1: Create the First Logical Volume
+
+We create a Logical Volume named `apps1-lv` with a size of **1000MB** in the Volume Group `vgapps`.
+
+**Command:**
+```bash
+lvcreate -L 1000M -n apps1-lv vgapps
+```
+
+Verify the LV creation:
+```bash
+lvdisplay
+```
+**Example Output:**
+```
+--- Logical volume ---
+LV Path                /dev/vgapps/apps1-lv
+LV Name                apps1-lv
+VG Name                vgapps
+LV UUID                FtTgEG-q95J-kG3n-WGti-NZgH-cH2u-oOG9zl
+LV Write Access        read/write
+LV Creation host, time localhost.localdomain, 2025-08-08 19:40:11 +0530
+LV Status              available
+# open                 0
+LV Size                1000.00 MiB
+Current LE             250
+Segments               1
+Allocation             inherit
+Read ahead sectors     auto
+- currently set to     256
+Block device           253:2
+```
+![Screenshot ](19.png)
+
+---
+
+## Step 2: Create the Second Logical Volume
+
+Now create another Logical Volume named `app2-lv` with a size of **1000MB** in the same Volume Group.
+
+**Command:**
+```bash
+lvcreate -L 1000M -n app2-lv vgapps
+```
+**Output:**
+```
+Logical volume "app2-lv" created.
+```
+
+Verify again:
+```bash
+lvdisplay
+```
+**Example Output:**
+```
+--- Logical volume ---
+LV Path                /dev/vgapps/app2-lv
+LV Name                app2-lv
+VG Name                vgapps
+LV UUID                tXAX0e-8MLs-DXOH-rhdu-9e5s-q3oH-AKT8H1
+LV Write Access        read/write
+LV Creation host, time localhost.localdomain, 2025-08-08 19:44:51 +0530
+LV Status              available
+# open                 0
+LV Size                1000.00 MiB
+Current LE             250
+Segments               1
+Allocation             inherit
+Read ahead sectors     auto
+- currently set to     256
+Block device           253:3
+```
+![Screenshot ](20.png)
+
+---
+
+## Step 3: Format the First Logical Volume with EXT4
+
+We will now format `apps1-lv` with the EXT4 filesystem.
+
+**Command:**
+```bash
+mkfs.ext4 /dev/vgapps/apps1-lv
+```
+
+**Explanation:**
+- `mkfs` = Make File System
+- `ext4` = Modern journaling file system for Linux
+- `/dev/vgapps/apps1-lv` = Path to the logical volume
+- This will erase existing data and prepare the LV for mounting.
+
+**Example Output:**
+```
+mke2fs 1.47.1 (20-May-2024)
+Creating filesystem with 256000 4k blocks and 64000 inodes
+Filesystem UUID: 432d54b7-4672-4983-a264-885d6760eef1
+Superblock backups stored on blocks:
+    32768, 98304, 163840, 229376
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (4096 blocks): done
+Writing superblocks and filesystem accounting information: done
+```
+![Screenshot ](21.png)
+
+---
+
+## Step 4: Format the Second Logical Volume with EXT4
+
+Format `app2-lv` with the EXT4 filesystem.
+
+**Command:**
+```bash
+mkfs.ext4 /dev/vgapps/app2-lv
+```
+
+**Example Output:**
+```
+mke2fs 1.47.1 (20-May-2024)
+Creating filesystem with 256000 4k blocks and 64000 inodes
+Filesystem UUID: 047e5605-2c4f-4e8e-9695-cf92b33d7a02
+Superblock backups stored on blocks:
+    32768, 98304, 163840, 229376
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (4096 blocks): done
+Writing superblocks and filesystem accounting information: done
+```
+![Screenshot ](22.png)
+
+---
+
+**✅ Summary:**
+- Created two Logical Volumes: `apps1-lv` and `app2-lv`.
+- Formatted both with the EXT4 filesystem.
+- Verified creation and formatting with `lvdisplay`.
 
 
