@@ -418,4 +418,120 @@ Writing superblocks and filesystem accounting information: done
 - Formatted both with the EXT4 filesystem.
 - Verified creation and formatting with `lvdisplay`.
 
+# Applying a Filesystem, Mounting Logical Volumes, and Configuring Persistent Mounts
+
+This guide covers the process of setting up a filesystem on Logical Volumes (LVs), mounting them to directories, and making these mounts persistent across reboots using `/etc/fstab`.
+
+---
+
+## Step 1: Create Mount Points
+
+Before mounting, create directories to serve as mount points.
+
+**Command:**
+```bash
+mkdir /apps1
+mkdir /app2
+```
+![Screenshot - Create Mount Points](23.png)
+
+---
+
+## Step 2: Mount the Logical Volumes
+
+Mount the Logical Volumes to the respective mount points.
+
+**Command:**
+```bash
+mount /dev/vgapps/apps1-lv /apps1
+mount /dev/vgapps/app2-lv /app2
+```
+![Screenshot - Mount Command](24.png)
+
+---
+
+## Step 3: Verify Mounts
+
+To check if the LVs are successfully mounted:
+
+**Command:**
+```bash
+cat /etc/mtab | grep apps1-lv
+df -h | grep apps1-lv
+df -h | grep app2-lv
+```
+**Example Output:**
+```
+/dev/mapper/vgapps-apps1--lv /apps1 ext4 rw,seclabel,relatime 0 0
+/dev/mapper/vgapps-app2--lv /app2 ext4 rw,seclabel,relatime 0 0
+```
+![Screenshot - Verify Mount](25.png)
+
+---
+
+## Step 4: Make Mounts Permanent
+
+Edit the `/etc/fstab` file and add entries for the LVs so they are mounted automatically after reboot.
+
+**Command:**
+```bash
+nano /etc/fstab
+```
+**Entries to Add:**
+```
+/dev/mapper/vgapps-apps1--lv /apps1 ext4 rw,seclabel,relatime 0 0
+/dev/mapper/vgapps-app2--lv /app2 ext4 rw,seclabel,relatime 0 0
+```
+![Screenshot - Edit fstab 1](26.png)  
+![Screenshot - Edit fstab 2](27.png)
+
+---
+
+## Step 5: Reload and Test fstab
+
+Run the following command to verify fstab entries:
+
+**Command:**
+```bash
+mount -av
+```
+**Example Output:**
+```
+/                        : ignored
+/boot                    : already mounted
+none                     : ignored
+/apps1                   : already mounted
+/app2                    : already mounted
+```
+![Screenshot - mount -av](28.png)
+
+---
+
+## Step 6: Verify After Reboot
+
+After rebooting, confirm that the LVs are still mounted.
+
+**Command:**
+```bash
+df -h
+```
+**Example Output:**
+```
+Filesystem                    Size  Used Avail Use% Mounted on
+/dev/mapper/cs-root            46G  5.2G   40G  12% /
+/dev/sda2                     960M  443M  518M  47% /boot
+/dev/mapper/vgapps-apps1--lv  966M   24K  900M   1% /apps1
+/dev/mapper/vgapps-app2--lv   966M   24K  900M   1% /app2
+```
+![Screenshot - df after reboot 1](29.png)  
+![Screenshot - df after reboot 2](30.png)
+
+---
+
+**✅ Summary:**
+- Created mount points `/apps1` and `/app2`.
+- Mounted Logical Volumes to these directories.
+- Verified mounts using `df` and `mtab`.
+- Configured `/etc/fstab` for persistent mounts.
+- Confirmed that mounts persist after reboot.
 
