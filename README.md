@@ -178,3 +178,100 @@ Device     Boot Start     End Sectors Size Id Type
 **✅ Summary:**  
 We successfully created a **2 GiB primary partition** on `/dev/sdb`, changed its type to **Linux LVM**, and verified it.
 
+# Creating a Physical Volume (PV) and Volume Group (VG) in LVM
+
+This guide describes how to convert an existing partition into a Physical Volume (PV) and then create a Volume Group (VG) for use with LVM.
+
+---
+
+## Step 1: Create Physical Volume (PV)
+Once the partition (`/dev/sdb1`) is ready, initialize it as a Physical Volume so that it can be used by LVM as storage capacity.
+
+**Command:**
+```bash
+pvcreate /dev/sdb1
+```
+**Output:**
+```
+Physical volume "/dev/sdb1" successfully created.
+```
+![Screenshot](15.png)
+
+---
+
+## Step 2: Display Physical Volume Details
+To check details of the created Physical Volume:
+```bash
+pvdisplay /dev/sdb1
+```
+**Example Output:**
+```
+"/dev/sdb1" is a new physical volume of "<2.00 GiB"
+--- NEW Physical volume ---
+PV Name               /dev/sdb1
+VG Name               
+PV Size               <2.00 GiB
+Allocatable           NO
+PE Size               0   
+Total PE              0
+Free PE               0
+Allocated PE          0
+PV UUID               GvYnc7-CcoK-ldFD-UOZT-MC0N-YiOm-TSdfGb
+```
+![Screenshot Step](16.png)
+
+---
+
+## Step 3: Create a Volume Group (VG)
+Create a new Volume Group named `vgapps` using the Physical Volume `/dev/sdb1`.
+
+**Command:**
+```bash
+vgcreate vgapps /dev/sdb1
+```
+**Output:**
+```
+Volume group "vgapps" successfully created
+```
+![Screenshot Step](17.png)
+
+---
+
+## Step 4: Display Volume Group Details
+To verify and view details of the newly created Volume Group:
+```bash
+vgdisplay vgapps
+```
+**Example Output:**
+```
+--- Volume group ---
+VG Name               vgapps
+System ID             
+Format                lvm2
+Metadata Areas        1
+Metadata Sequence No  1
+VG Access             read/write
+VG Status             resizable
+MAX LV                0
+Cur LV                0
+Open LV               0
+Max PV                0
+Cur PV                1
+Act PV                1
+VG Size               <2.00 GiB
+PE Size               4.00 MiB
+Total PE              511
+Alloc PE / Size       0 / 0   
+Free  PE / Size       511 / <2.00 GiB
+VG UUID               Qs9FVW-Q3Z9-cbWw-vLeA-f43X-hxl3-2Pn7QW
+```
+![Screenshot Step](18.png)
+
+---
+
+**✅ Summary:**  
+- Converted `/dev/sdb1` into a Physical Volume.  
+- Created a Volume Group named `vgapps`.  
+- Verified details of both PV and VG using `pvdisplay` and `vgdisplay`.
+
+
