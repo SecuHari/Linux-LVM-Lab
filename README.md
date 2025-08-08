@@ -58,12 +58,12 @@ Here, we will add a **new virtual hard disk** in VirtualBox which will later be 
    ![Disk Creation Wizard](images/2.png)
 
 3. **Animated GIF of the Process**  
-   ![Add Disk Animation](images/3.png)
-   ![Add Disk Animation](images/4.png)
-   ![Add Disk Animation](images/5.png)
-   ![Add Disk Animation](images/6.png)
-   ![Add Disk Animation](images/7.png)
-   ![Add Disk Animation](images/8.png)
+   ![Add Disk Animation](3.png)
+   ![Add Disk Animation](4.png)
+   ![Add Disk Animation](5.png)
+   ![Add Disk Animation](6.png)
+   ![Add Disk Animation](7.png)
+   ![Add Disk Animation](8.png)
 ---
 
 ## ⏭️ Next Steps
